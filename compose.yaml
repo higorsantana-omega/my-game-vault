@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: mygamevault-db
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    ports:
+      - 5432:5432
+    volumes:
+      - vaultdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  vaultdata:
