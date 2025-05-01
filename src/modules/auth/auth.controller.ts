@@ -3,6 +3,9 @@ import { AuthService } from './auth.service'
 import { SignupDto } from './dto/signup.dto'
 import { AuthenticateDto } from './dto/authenticate.dto'
 
+import isPublic from '@src/shared/module/decorators/isPublic.decorator'
+
+@isPublic()
 @Controller({
   path: 'auth',
   version: '1'
