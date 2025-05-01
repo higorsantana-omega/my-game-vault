@@ -29,7 +29,7 @@ export class GamesService {
 
     const game = new Game({
       title: rawgGame.name,
-      rawgId: rawgGame.id,
+      rawgId: String(rawgGame.id),
       description: '',
       releaseDate: new Date(rawgGame.released),
       platforms: rawgGame.platforms?.map((p) => p.platform.name) || [],
