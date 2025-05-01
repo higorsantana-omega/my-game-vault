@@ -32,7 +32,7 @@ export class GamesService {
 
     if (gameFromDb) {
       this.logger.log(
-        `Game found in database for filters: ${JSON.stringify(retrieveDto.filters)}`
+        `Game found in database for filters: ${JSON.stringify(gameFilters)}`
       )
       const result = this.mapGameToResponseDto(gameFromDb)
 
@@ -40,12 +40,13 @@ export class GamesService {
     }
 
     this.logger.log(
-      `Fetching game from RAWG API: ${retrieveDto?.filters?.title || ''}`
+      `Fetching game from RAWG API: ${JSON.stringify(gameFilters)}`
     )
 
-    const rawgGames = await this.rawgApiProvider.searchGamesByTitle(
-      retrieveDto.filters?.title as string
-    )
+    const rawgGames = await this.rawgApiProvider.searchGames({
+      title: gameFilters.title,
+      platformName: gameFilters.platform
+    })
 
     if (!rawgGames || rawgGames.length === 0) {
       throw new NotFoundException(
