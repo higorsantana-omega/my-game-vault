@@ -1,5 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 
+import { GamesRepository } from '@src/shared/module/database/repositories/games.repository'
+
 import { GameResponseDto, RetrieveGamesDto } from './dto/retrive-games.dto'
 import { RawgApiProvider } from '@src/shared/module/providers/rawg-api.provider'
 import { Game } from '@src/shared/entity/game.entity'
@@ -8,9 +10,35 @@ import { Game } from '@src/shared/entity/game.entity'
 export class GamesService {
   private readonly logger = new Logger(GamesService.name)
 
-  constructor(private readonly rawgApiProvider: RawgApiProvider) {}
+  constructor(
+    private readonly rawgApiProvider: RawgApiProvider,
+    private readonly gamesRepository: GamesRepository
+  ) {}
 
   async retrieveGames(retrieveDto: RetrieveGamesDto): Promise<GameResponseDto> {
+    const gameFilters = {
+      title: retrieveDto?.filters?.title?.trim()?.toLowerCase(),
+      platform: retrieveDto?.filters?.platform?.trim()?.toLowerCase()
+    }
+
+    const gameFromDb = await this.gamesRepository.findOneBy({
+      title: gameFilters?.title ? { contains: gameFilters.title } : undefined,
+      platforms: gameFilters?.platform
+        ? {
+            has: gameFilters.platform
+          }
+        : undefined
+    })
+
+    if (gameFromDb) {
+      this.logger.log(
+        `Game found in database for filters: ${JSON.stringify(retrieveDto.filters)}`
+      )
+      const result = this.mapGameToResponseDto(gameFromDb)
+
+      return result
+    }
+
     this.logger.log(
       `Fetching game from RAWG API: ${retrieveDto?.filters?.title || ''}`
     )
@@ -27,7 +55,7 @@ export class GamesService {
 
     const rawgGame = rawgGames[0]
 
-    const game = new Game({
+    const newGame = new Game({
       title: rawgGame.name,
       rawgId: String(rawgGame.id),
       description: '',
@@ -39,6 +67,8 @@ export class GamesService {
         count: rawgGame.ratings_count
       }
     })
+
+    const game = await this.gamesRepository.save(newGame)
 
     const result = this.mapGameToResponseDto(game)
     return result
