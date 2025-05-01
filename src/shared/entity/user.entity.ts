@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker'
+
 export interface UserData {
   id: string
   name: string
@@ -47,5 +49,15 @@ export class User {
       email: this.email,
       password: this.password
     }
+  }
+
+  static dummy(data?: Partial<UserData>): User {
+    return this.createFrom({
+      id: faker.string.uuid(),
+      name: faker.person.firstName(),
+      email: faker.internet.email(),
+      password: 'UserDumm1@',
+      ...data
+    })
   }
 }
