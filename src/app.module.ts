@@ -9,9 +9,10 @@ import { AuthGuard } from './modules/auth/auth.guard'
 
 import { AuthModule } from './modules/auth/auth.module'
 import { UsersModule } from './modules/users/users.module'
+import { GamesModule } from './modules/games/games.module'
 
 @Module({
-  imports: [DatabaseModule, AuthModule, UsersModule],
+  imports: [DatabaseModule, AuthModule, UsersModule, GamesModule],
   controllers: [],
   providers: [
     {
