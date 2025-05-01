@@ -1,17 +1,19 @@
 import { faker } from '@faker-js/faker'
 
+export type GameRating = {
+  value: number
+  count: number
+}
+
 export interface GameData {
   id?: string
   title: string
-  rawgId: number
+  rawgId: string
   description?: string
   releaseDate?: Date
   platforms: string[]
   imageUrl: string
-  rating: {
-    value: number
-    count: number
-  }
+  rating: GameRating
   createdAt?: Date
   updatedAt?: Date
 }
@@ -19,15 +21,12 @@ export interface GameData {
 export class Game {
   private readonly id?: string
   private readonly title: string
-  private readonly rawgId: number
+  private readonly rawgId: string
   private readonly description: string | null
   private readonly releaseDate: Date | null
   private readonly platforms: string[]
   private readonly imageUrl: string
-  private readonly rating: {
-    value: number
-    count: number
-  }
+  private readonly rating: GameRating
   private readonly createdAt: Date | null
   private readonly updatedAt: Date | null
 
@@ -56,7 +55,7 @@ export class Game {
     return this.title
   }
 
-  getRawgId(): number {
+  getRawgId(): string {
     return this.rawgId
   }
 
@@ -107,7 +106,7 @@ export class Game {
     return this.createFrom({
       id: faker.string.uuid(),
       title: faker.commerce.productName(),
-      rawgId: faker.number.int({ min: 1, max: 999999 }),
+      rawgId: faker.string.uuid(),
       description: faker.lorem.sentence(),
       releaseDate: faker.date.past(),
       platforms: [faker.word.noun(), faker.word.noun()],
