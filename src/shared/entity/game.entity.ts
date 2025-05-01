@@ -32,7 +32,7 @@ export class Game {
 
   constructor(data: GameData) {
     this.id = data.id
-    this.title = data.title
+    this.title = data.title.trim().toLowerCase()
     this.rawgId = data.rawgId
     this.description = data.description || null
     this.releaseDate = data.releaseDate || null
