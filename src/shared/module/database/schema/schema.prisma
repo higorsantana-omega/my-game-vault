@@ -15,3 +15,18 @@ model User {
 
   @@map("user")
 }
+
+model Game {
+  id          String   @id @default(uuid()) @db.Uuid
+  title       String
+  description String?
+  releaseDate DateTime
+  platforms   String[]
+  imageUrl    String
+  rating      Json
+  rawgId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("game")
+}
