@@ -4,7 +4,7 @@ import { type Prisma } from '@prisma/client'
 
 import { PrismaService } from '../prisma.service'
 
-import { User } from 'src/shared/entity/user.entity'
+import { User } from '@src/shared/entity/user.entity'
 
 type QueryableFields = Prisma.$UserPayload['scalars']
 

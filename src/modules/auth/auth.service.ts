@@ -7,8 +7,8 @@ import { JwtService } from '@nestjs/jwt'
 
 import { compare, hash } from 'bcryptjs'
 
-import { UsersRepository } from 'src/shared/module/database/repositories/users.repository'
-import { User, type UserData } from 'src/shared/entity/user.entity'
+import { UsersRepository } from '@src/shared/module/database/repositories/users.repository'
+import { User, type UserData } from '@src/shared/entity/user.entity'
 
 import { SignupDto } from './dto/signup.dto'
 import { AuthenticateDto } from './dto/authenticate.dto'
