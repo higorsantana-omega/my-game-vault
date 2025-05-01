@@ -7,8 +7,6 @@ export interface UserData {
   password: string
 }
 
-export type ShowUserDTO = Omit<UserData, 'password'>
-
 export class User {
   private readonly id?: string
   private readonly name: string
