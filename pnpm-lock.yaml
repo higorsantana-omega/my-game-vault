@@ -38,12 +38,18 @@ importers:
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
+      ioredis:
+        specifier: ^5.6.1
+        version: 5.6.1
       nestjs-zod:
         specifier: ^4.3.1
         version: 4.3.1(@nestjs/common@11.1.0(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.0)(zod@3.24.3)
       prisma:
         specifier: ^6.7.0
         version: 6.7.0(typescript@5.8.3)
+      redis:
+        specifier: ^5.0.0
+        version: 5.0.0
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -681,6 +687,9 @@ packages:
       '@types/node':
         optional: true
 
+  '@ioredis/commands@1.2.0':
+    resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
+
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
@@ -1039,6 +1048,34 @@ packages:
 
   '@prisma/get-platform@6.7.0':
     resolution: {integrity: sha512-i9IH5lO4fQwnMLvQLYNdgVh9TK3PuWBfQd7QLk/YurnAIg+VeADcZDbmhAi4XBBDD+hDif9hrKyASu0hbjwabw==}
+
+  '@redis/bloom@5.0.0':
+    resolution: {integrity: sha512-YHlra6a7+brJ3Ustqa+jC68Pdnw2/wbnVLeULN0llP3gHpKxOSmiDyLwuHq5t/jFi6QUgjSprUQi2a8CieKFIA==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@redis/client': ^5.0.0
+
+  '@redis/client@5.0.0':
+    resolution: {integrity: sha512-1MqfzOOoFBwWprigJ3S5hM+LuzaWwxyyx+74NDzCpmjKWyjjC07xkWsd5E9fr+61NUDtvUivRiyAxGiRIwJCaQ==}
+    engines: {node: '>= 18'}
+
+  '@redis/json@5.0.0':
+    resolution: {integrity: sha512-8YFjshsvWR9dWjOiQ50TfBxfl+z1mjCae8jDnfOYN1aCvUZWJXqM1OpL56v6mWRyXwZ5C9qJJKDGmHTr4PVskQ==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@redis/client': ^5.0.0
+
+  '@redis/search@5.0.0':
+    resolution: {integrity: sha512-oEop/S/0NB5p7vpTTlp5X5LQO4oTomJnFEOaKhQ5xZWROLXTgEVvPSfXVNBbtr9maU2+OupxXQR63HW3MGeTUg==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@redis/client': ^5.0.0
+
+  '@redis/time-series@5.0.0':
+    resolution: {integrity: sha512-DNsP4DH5CRfXlQDyvLJm2DltZm3kjpVKZsNTI3SPdbRxhc9i2c0NehUbM/gDECnEfG+jkNN/LUv6Em4LaLwPBQ==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@redis/client': ^5.0.0
 
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
@@ -1697,6 +1734,10 @@ packages:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
 
+  cluster-key-slot@1.1.2:
+    resolution: {integrity: sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==}
+    engines: {node: '>=0.10.0'}
+
   co@4.6.0:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
@@ -1844,6 +1885,10 @@ packages:
   delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
+
+  denque@2.1.0:
+    resolution: {integrity: sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==}
+    engines: {node: '>=0.10'}
 
   depd@2.0.0:
     resolution: {integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==}
@@ -2357,6 +2402,10 @@ packages:
   inspect-with-kind@1.0.5:
     resolution: {integrity: sha512-MAQUJuIo7Xqk8EVNP+6d3CKq9c80hi4tjIbIAT6lmGW9W6WzlHiu9PS8uSuUYU+Do+j1baiFp3H25XEVxDIG2g==}
 
+  ioredis@5.6.1:
+    resolution: {integrity: sha512-UxC0Yv1Y4WRJiGQxQkP0hfdL0/5/6YvdfOOClRgJ0qppSarkhneSa6UvkMkms0AkdGimSH3Ikqm+6mkMmX7vGA==}
+    engines: {node: '>=12.22.0'}
+
   ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
     engines: {node: '>= 0.10'}
@@ -2684,8 +2733,14 @@ packages:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
 
+  lodash.defaults@4.2.0:
+    resolution: {integrity: sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==}
+
   lodash.includes@4.3.0:
     resolution: {integrity: sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==}
+
+  lodash.isarguments@3.1.0:
+    resolution: {integrity: sha512-chi4NHZlZqZD18a0imDHnZPrDeBbTtVN7GXMwuGdRH9qotxAjYs3aVLKc7zNOG9eddR5Ksd8rvFEBc9SsggPpg==}
 
   lodash.isboolean@3.0.3:
     resolution: {integrity: sha512-Bz5mupy2SVbPHURB98VAcw+aHh4vRV5IPNhILUCsOzRmsTmSQ17jIuqopAentWoehktxGd9e/hbIXq980/1QJg==}
@@ -3114,6 +3169,18 @@ packages:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}
     engines: {node: '>= 14.18.0'}
 
+  redis-errors@1.2.0:
+    resolution: {integrity: sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==}
+    engines: {node: '>=4'}
+
+  redis-parser@3.0.0:
+    resolution: {integrity: sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==}
+    engines: {node: '>=4'}
+
+  redis@5.0.0:
+    resolution: {integrity: sha512-J/fzf0cYeFw5NP4aYIvv9owYOcNUsaDqF4qmwbSuaV4yKBLaIHJQIFbAKLgjn99GDXdJBbfqCRXE7+BIlkpATA==}
+    engines: {node: '>= 18'}
+
   reflect-metadata@0.2.2:
     resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
 
@@ -3296,6 +3363,9 @@ packages:
   stack-utils@2.0.6:
     resolution: {integrity: sha512-XlkWvfIm6RmsWtNJx+uqtKLS8eqFbxUg0ZzLXqY0caEy9l7hruX8IpiDnjsLavoBgqCCR71TqWO8MaXYheJ3RQ==}
     engines: {node: '>=10'}
+
+  standard-as-callback@2.1.0:
+    resolution: {integrity: sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==}
 
   statuses@2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
@@ -4218,6 +4288,8 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.15.3
 
+  '@ioredis/commands@1.2.0': {}
+
   '@isaacs/cliui@8.0.2':
     dependencies:
       string-width: 5.1.2
@@ -4658,6 +4730,26 @@ snapshots:
   '@prisma/get-platform@6.7.0':
     dependencies:
       '@prisma/debug': 6.7.0
+
+  '@redis/bloom@5.0.0(@redis/client@5.0.0)':
+    dependencies:
+      '@redis/client': 5.0.0
+
+  '@redis/client@5.0.0':
+    dependencies:
+      cluster-key-slot: 1.1.2
+
+  '@redis/json@5.0.0(@redis/client@5.0.0)':
+    dependencies:
+      '@redis/client': 5.0.0
+
+  '@redis/search@5.0.0(@redis/client@5.0.0)':
+    dependencies:
+      '@redis/client': 5.0.0
+
+  '@redis/time-series@5.0.0(@redis/client@5.0.0)':
+    dependencies:
+      '@redis/client': 5.0.0
 
   '@sec-ant/readable-stream@0.4.1': {}
 
@@ -5428,6 +5520,8 @@ snapshots:
 
   clone@1.0.4: {}
 
+  cluster-key-slot@1.1.2: {}
+
   co@4.6.0: {}
 
   collect-v8-coverage@1.0.2: {}
@@ -5551,6 +5645,8 @@ snapshots:
   defer-to-connect@2.0.1: {}
 
   delayed-stream@1.0.0: {}
+
+  denque@2.1.0: {}
 
   depd@2.0.0: {}
 
@@ -6136,6 +6232,20 @@ snapshots:
     dependencies:
       kind-of: 6.0.3
 
+  ioredis@5.6.1:
+    dependencies:
+      '@ioredis/commands': 1.2.0
+      cluster-key-slot: 1.1.2
+      debug: 4.4.0
+      denque: 2.1.0
+      lodash.defaults: 4.2.0
+      lodash.isarguments: 3.1.0
+      redis-errors: 1.2.0
+      redis-parser: 3.0.0
+      standard-as-callback: 2.1.0
+    transitivePeerDependencies:
+      - supports-color
+
   ipaddr.js@1.9.1: {}
 
   is-arrayish@0.2.1: {}
@@ -6634,7 +6744,11 @@ snapshots:
     dependencies:
       p-locate: 5.0.0
 
+  lodash.defaults@4.2.0: {}
+
   lodash.includes@4.3.0: {}
+
+  lodash.isarguments@3.1.0: {}
 
   lodash.isboolean@3.0.3: {}
 
@@ -6993,6 +7107,20 @@ snapshots:
 
   readdirp@4.1.2: {}
 
+  redis-errors@1.2.0: {}
+
+  redis-parser@3.0.0:
+    dependencies:
+      redis-errors: 1.2.0
+
+  redis@5.0.0:
+    dependencies:
+      '@redis/bloom': 5.0.0(@redis/client@5.0.0)
+      '@redis/client': 5.0.0
+      '@redis/json': 5.0.0(@redis/client@5.0.0)
+      '@redis/search': 5.0.0(@redis/client@5.0.0)
+      '@redis/time-series': 5.0.0(@redis/client@5.0.0)
+
   reflect-metadata@0.2.2: {}
 
   repeat-string@1.6.1: {}
@@ -7185,6 +7313,8 @@ snapshots:
   stack-utils@2.0.6:
     dependencies:
       escape-string-regexp: 2.0.0
+
+  standard-as-callback@2.1.0: {}
 
   statuses@2.0.1: {}
 
