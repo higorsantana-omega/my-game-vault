@@ -4,11 +4,11 @@ import { JwtService } from '@nestjs/jwt'
 import { UnauthorizedException, ConflictException } from '@nestjs/common'
 import { mock, MockProxy } from 'jest-mock-extended'
 
-import { UsersRepository } from '../../src/shared/module/database/repositories/users.repository'
-import { User } from '../../src/shared/entity/user.entity'
-import { AuthService } from '../../src/modules/auth/auth.service'
-import { AuthenticateDto } from '../../src/modules/auth/dto/authenticate.dto'
-import { SignupDto } from '../../src/modules/auth/dto/signup.dto'
+import { UsersRepository } from '@src/shared/module/database/repositories/users.repository'
+import { User } from '@src/shared/entity/user.entity'
+import { AuthService } from '@src/modules/auth/auth.service'
+import { AuthenticateDto } from '@src/modules/auth/dto/authenticate.dto'
+import { SignupDto } from '@src/modules/auth/dto/signup.dto'
 
 describe('AuthService', () => {
   let authService: AuthService

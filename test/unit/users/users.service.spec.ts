@@ -4,11 +4,11 @@ import { NotFoundException } from '@nestjs/common'
 
 import { mock, MockProxy } from 'jest-mock-extended'
 
-import { UsersRepository } from '../../src/shared/module/database/repositories/users.repository'
-import { User } from '../../src/shared/entity/user.entity'
-import { UsersService } from '../../src/modules/users/users.service'
-import { GetUserDto } from '../../src/modules/users/dto/user.dto'
-import { ShowUserDto } from '../../src/modules/users/dto/show-user.dto'
+import { UsersRepository } from '@src/shared/module/database/repositories/users.repository'
+import { User } from '@src/shared/entity/user.entity'
+import { UsersService } from '@src/modules/users/users.service'
+import { GetUserDto } from '@src/modules/users/dto/user.dto'
+import { ShowUserDto } from '@src/modules/users/dto/show-user.dto'
 
 describe('UsersService', () => {
   let usersService: UsersService
