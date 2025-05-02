@@ -16,6 +16,48 @@ export class GamesRepository {
     this.model = prismaService.game
   }
 
+  async findAllPaginated(
+    fields?: Partial<QueryableFields>,
+    pagination?: { page: number; limit: number }
+  ): Promise<{ items: Game[]; total: number; totalPages: number }> {
+    const { page = 1, limit = 10 } = pagination || {}
+    const skip = (page - 1) * limit
+
+    const [games, total] = await Promise.all([
+      this.model.findMany({
+        where: fields,
+        skip,
+        take: limit
+      }),
+      this.model.count({
+        where: fields
+      })
+    ])
+
+    const totalPages = Math.ceil(total / (pagination?.limit || 1))
+
+    return {
+      items: games.map((game) => {
+        return Game.createFrom({
+          id: game.id,
+          title: game.title,
+          description: game.description as string,
+          imageUrl: game.imageUrl,
+          platforms: game.platforms || [],
+          rating: {
+            ...(game.rating as GameRating)
+          },
+          rawgId: game.rawgId,
+          releaseDate: game.releaseDate,
+          createdAt: game.createdAt,
+          updatedAt: game.updatedAt
+        })
+      }),
+      total,
+      totalPages
+    }
+  }
+
   async findAll(fields?: Partial<QueryableFields>): Promise<Game[]> {
     const games = await this.model.findMany({
       where: fields
