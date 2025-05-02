@@ -7,6 +7,12 @@ const gameFilterDto = z.object({
       title: z.string().optional().describe('The title of game'),
       platform: z.string().optional().describe('The platform of game')
     })
+    .optional(),
+  pagination: z
+    .object({
+      page: z.number().optional(),
+      limit: z.number().optional()
+    })
     .optional()
 })
 
@@ -32,3 +38,18 @@ export const gameResponseDto = z.object({
 })
 
 export class GameResponseDto extends createZodDto(gameResponseDto) {}
+
+export const paginatedResponseDto = <T extends z.ZodTypeAny>(itemSchema: T) =>
+  z.object({
+    data: z.array(itemSchema),
+    meta: z.object({
+      total: z.number(),
+      page: z.number(),
+      limit: z.number(),
+      totalPages: z.number()
+    })
+  })
+
+export type PaginatedGameResponse = z.infer<
+  ReturnType<typeof paginatedResponseDto<typeof gameResponseDto>>
+>
