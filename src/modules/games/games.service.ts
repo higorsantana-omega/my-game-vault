@@ -30,14 +30,9 @@ export class GamesService {
       return cacheHit
     }
 
-    const gameFromDb = await this.gamesRepository.findOneBy({
-      title: gameFilters?.title ? { contains: gameFilters.title } : undefined,
-      platforms: gameFilters?.platform
-        ? {
-            has: gameFilters.platform
-          }
-        : undefined
-    })
+    const gameFromDb = await this.gamesRepository.findOneBy(
+      this.getQueryFromFilters(gameFilters)
+    )
 
     if (gameFromDb) {
       this.logger.log(
@@ -105,14 +100,9 @@ export class GamesService {
       return cacheHit
     }
 
-    const games = await this.gamesRepository.findAll({
-      title: gameFilters?.title ? { contains: gameFilters.title } : undefined,
-      platforms: gameFilters?.platform
-        ? {
-            has: gameFilters.platform
-          }
-        : undefined
-    })
+    const games = await this.gamesRepository.findAll(
+      this.getQueryFromFilters(gameFilters)
+    )
 
     const result = games.map((game) => this.mapGameToResponseDto(game))
 
@@ -132,6 +122,13 @@ export class GamesService {
     return `${prefix}:${Object.entries(filters)
       .map(([key, value]) => `${key}=${value}`)
       .join('&')}`
+  }
+
+  private getQueryFromFilters(filters: { title: string; platform: string }) {
+    return {
+      title: filters.title ? { contains: filters.title } : undefined,
+      platforms: filters.platform ? { has: filters.platform } : undefined
+    }
   }
 
   private mapGameToResponseDto(game: Game): GameResponseDto {
