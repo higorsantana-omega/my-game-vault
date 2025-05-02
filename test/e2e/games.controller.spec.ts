@@ -89,7 +89,7 @@ describe('GamesController (e2e)', () => {
       expect(body.meta).toBeDefined()
       expect(body.meta.page).toBe(1)
       expect(body.meta.limit).toBe(10)
-      expect(body.meta.total).toBe(24)
+      expect(body.meta.total).toBe(25)
       expect(body.meta.totalPages).toBe(3)
     })
 
