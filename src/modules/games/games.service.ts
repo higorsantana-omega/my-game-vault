@@ -2,7 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 
 import { GamesRepository } from '@src/shared/module/database/repositories/games.repository'
 
-import { GameResponseDto, RetrieveGamesDto } from './dto/retrive-games.dto'
+import { GameFilterDto, GameResponseDto } from './dto/games-filters.dto'
 import { RawgApiProvider } from '@src/shared/module/providers/rawg-api.provider'
 import { Game } from '@src/shared/entity/game.entity'
 import { CacheProvider } from '@src/shared/module/providers/cache.provider'
@@ -17,10 +17,10 @@ export class GamesService {
     private readonly cacheProvider: CacheProvider
   ) {}
 
-  async retrieveGames(retrieveDto: RetrieveGamesDto): Promise<GameResponseDto> {
+  async searchGames(gameFilterDto: GameFilterDto): Promise<GameResponseDto> {
     const gameFilters = {
-      title: retrieveDto?.filters?.title?.trim()?.toLowerCase(),
-      platform: retrieveDto?.filters?.platform?.trim()?.toLowerCase()
+      title: gameFilterDto?.filters?.title?.trim()?.toLowerCase(),
+      platform: gameFilterDto?.filters?.platform?.trim()?.toLowerCase()
     }
 
     const cacheKey = `game:search:${Object.entries(gameFilters)
@@ -65,7 +65,7 @@ export class GamesService {
 
     if (!rawgGames || rawgGames.length === 0) {
       throw new NotFoundException(
-        `No games found with title: ${retrieveDto?.filters?.title || ''}`
+        `No games found with title: ${gameFilterDto?.filters?.title || ''}`
       )
     }
 

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { createZodDto } from 'nestjs-zod'
 
-const retrieveGamesDto = z.object({
+const gameFilterDto = z.object({
   filters: z
     .object({
       title: z.string().optional(),
@@ -10,7 +10,7 @@ const retrieveGamesDto = z.object({
     .optional()
 })
 
-export class RetrieveGamesDto extends createZodDto(retrieveGamesDto) {}
+export class GameFilterDto extends createZodDto(gameFilterDto) {}
 
 const ratingGameDto = z.object({
   value: z.number().describe('5'),

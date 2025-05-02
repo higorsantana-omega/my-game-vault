@@ -12,6 +12,6 @@ export class GamesController {
 
   @Get('/search')
   searchGames(@Query('title') title: string) {
-    return this.gamesService.retrieveGames({ filters: { title } })
+    return this.gamesService.searchGames({ filters: { title } })
   }
 }
