@@ -7,6 +7,12 @@ import { RawgApiProvider } from '@src/shared/module/providers/rawg-api.provider'
 import { Game } from '@src/shared/entity/game.entity'
 import { CacheProvider } from '@src/shared/module/providers/cache.provider'
 import { CACHE_KEYS } from './constants/cache-contants'
+import {
+  generateCacheKey,
+  getQueryFromFilters,
+  mapGameToResponseDto,
+  normalizeGameFilters
+} from './utils'
 
 @Injectable()
 export class GamesService {
@@ -19,9 +25,9 @@ export class GamesService {
   ) {}
 
   async searchGames(gameFilterDto: GameFilterDto): Promise<GameResponseDto> {
-    const gameFilters = this.normalizeGameFilters(gameFilterDto)
+    const gameFilters = normalizeGameFilters(gameFilterDto)
 
-    const cacheKey = this.generateCacheKey(CACHE_KEYS.GAME_SEARCH, gameFilters)
+    const cacheKey = generateCacheKey(CACHE_KEYS.GAME_SEARCH, gameFilters)
 
     const cacheHit = await this.cacheProvider.get<GameResponseDto>(cacheKey)
     if (cacheHit) {
@@ -31,14 +37,14 @@ export class GamesService {
     }
 
     const gameFromDb = await this.gamesRepository.findOneBy(
-      this.getQueryFromFilters(gameFilters)
+      getQueryFromFilters(gameFilters)
     )
 
     if (gameFromDb) {
       this.logger.log(
         `Game found in database for filters: ${JSON.stringify(gameFilters)}`
       )
-      const result = this.mapGameToResponseDto(gameFromDb)
+      const result = mapGameToResponseDto(gameFromDb)
 
       await this.cacheProvider.set<GameResponseDto>(cacheKey, result, 10000)
 
@@ -77,7 +83,7 @@ export class GamesService {
 
     const game = await this.gamesRepository.save(newGame)
 
-    const result = this.mapGameToResponseDto(game)
+    const result = mapGameToResponseDto(game)
 
     await this.cacheProvider.set<GameResponseDto>(cacheKey, result, 10000)
     await this.cacheProvider.delete(CACHE_KEYS.GAME_LIST)
@@ -88,10 +94,10 @@ export class GamesService {
   async findAllGames(
     gameFilterDto?: GameFilterDto
   ): Promise<GameResponseDto[]> {
-    const gameFilters = this.normalizeGameFilters(gameFilterDto)
+    const gameFilters = normalizeGameFilters(gameFilterDto)
 
     const cacheKey = gameFilterDto
-      ? this.generateCacheKey(CACHE_KEYS.GAME_LIST, gameFilters)
+      ? generateCacheKey(CACHE_KEYS.GAME_LIST, gameFilters)
       : CACHE_KEYS.GAME_LIST
 
     const cacheHit = await this.cacheProvider.get<GameResponseDto[]>(cacheKey)
@@ -101,46 +107,13 @@ export class GamesService {
     }
 
     const games = await this.gamesRepository.findAll(
-      this.getQueryFromFilters(gameFilters)
+      getQueryFromFilters(gameFilters)
     )
 
-    const result = games.map((game) => this.mapGameToResponseDto(game))
+    const result = games.map((game) => mapGameToResponseDto(game))
 
     await this.cacheProvider.set<GameResponseDto[]>(cacheKey, result, 10000)
 
     return result
-  }
-
-  private normalizeGameFilters(gameFilterDto?: GameFilterDto) {
-    return {
-      title: gameFilterDto?.filters?.title?.trim()?.toLowerCase() || '',
-      platform: gameFilterDto?.filters?.platform?.trim()?.toLowerCase() || ''
-    }
-  }
-
-  private generateCacheKey(prefix: string, filters: Record<string, string>) {
-    return `${prefix}:${Object.entries(filters)
-      .map(([key, value]) => `${key}=${value}`)
-      .join('&')}`
-  }
-
-  private getQueryFromFilters(filters: { title: string; platform: string }) {
-    return {
-      title: filters.title ? { contains: filters.title } : undefined,
-      platforms: filters.platform ? { has: filters.platform } : undefined
-    }
-  }
-
-  private mapGameToResponseDto(game: Game): GameResponseDto {
-    const gameData = game.serialize()
-    return {
-      id: gameData.id as string,
-      title: gameData.title,
-      description: gameData.description ?? '',
-      releaseDate: gameData.releaseDate?.toISOString().split('T')[0] as string,
-      platforms: gameData.platforms,
-      imageUrl: gameData.imageUrl,
-      rating: gameData.rating
-    }
   }
 }
