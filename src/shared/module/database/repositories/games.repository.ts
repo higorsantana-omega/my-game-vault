@@ -16,7 +16,29 @@ export class GamesRepository {
     this.model = prismaService.game
   }
 
-  async findOneBy(fields: Partial<QueryableFields>): Promise<Game | null> {
+  async findAll(fields?: Partial<QueryableFields>): Promise<Game[]> {
+    const games = await this.model.findMany({
+      where: fields
+    })
+    return games.map((game) => {
+      return Game.createFrom({
+        id: game.id,
+        title: game.title,
+        description: game.description as string,
+        imageUrl: game.imageUrl,
+        platforms: game.platforms || [],
+        rating: {
+          ...(game.rating as GameRating)
+        },
+        rawgId: game.rawgId,
+        releaseDate: game.releaseDate,
+        createdAt: game.createdAt,
+        updatedAt: game.updatedAt
+      })
+    })
+  }
+
+  async findOneBy(fields?: Partial<QueryableFields>): Promise<Game | null> {
     const game = await this.model.findFirst({
       where: fields
     })
@@ -31,10 +53,10 @@ export class GamesRepository {
       rating: {
         ...(game.rating as GameRating)
       },
-      rawgId: game.rawgId as string,
+      rawgId: game.rawgId,
       releaseDate: game.releaseDate,
-      createdAt: game.createdAt as Date,
-      updatedAt: game.updatedAt as Date
+      createdAt: game.createdAt,
+      updatedAt: game.updatedAt
     })
   }
 
@@ -57,10 +79,10 @@ export class GamesRepository {
       rating: {
         ...(game.rating as GameRating)
       },
-      rawgId: game.rawgId as string,
+      rawgId: game.rawgId,
       releaseDate: game.releaseDate,
-      createdAt: game.createdAt as Date,
-      updatedAt: game.updatedAt as Date
+      createdAt: game.createdAt,
+      updatedAt: game.updatedAt
     })
   }
 }
