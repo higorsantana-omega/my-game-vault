@@ -5,17 +5,19 @@ import { GameFilterDto, GameResponseDto } from '../dto/games-filters.dto'
 export const normalizeGameFilters = (gameFilterDto?: GameFilterDto) => {
   return {
     title: gameFilterDto?.filters?.title?.trim()?.toLowerCase() || '',
-    platform: gameFilterDto?.filters?.platform?.trim()?.toLowerCase() || ''
+    platform: gameFilterDto?.filters?.platform?.trim()?.toLowerCase() || '',
+    pagination: {
+      page: Math.max(1, gameFilterDto?.pagination?.page || 1),
+      limit: Math.min(100, Math.max(1, gameFilterDto?.pagination?.limit || 10))
+    }
   }
 }
 
 export const generateCacheKey = (
   prefix: string,
-  filters: Record<string, string>
+  params: Record<string, any>
 ) => {
-  return `${prefix}:${Object.entries(filters)
-    .map(([key, value]) => `${key}=${value}`)
-    .join('&')}`
+  return `${prefix}:${JSON.stringify(params)}`
 }
 
 export const getQueryFromFilters = (filters: {
