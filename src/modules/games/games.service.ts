@@ -3,7 +3,6 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { GamesRepository } from '@src/shared/module/database/repositories/games.repository'
 
 import { GameFilterDto, GameResponseDto } from './dto/games-filters.dto'
-import { RawgApiProvider } from '@src/shared/module/providers/rawg-api.provider'
 import { Game } from '@src/shared/entity/game.entity'
 import { CacheProvider } from '@src/shared/module/providers/cache/cache.provider'
 import { CACHE_KEYS, CACHE_TTL } from './constants/cache-contants'
@@ -13,13 +12,15 @@ import {
   mapGameToResponseDto,
   normalizeGameFilters
 } from './utils'
+import { GameProvider } from '@src/shared/module/providers/games-database/game.provider'
+import { RawgGameInterface } from '@src/shared/interfaces/rawg-game.interface'
 
 @Injectable()
 export class GamesService {
   private readonly logger = new Logger(GamesService.name)
 
   constructor(
-    private readonly rawgApiProvider: RawgApiProvider,
+    private readonly gameDatabaseProvider: GameProvider,
     private readonly gamesRepository: GamesRepository,
     private readonly cacheProvider: CacheProvider
   ) {}
@@ -59,10 +60,11 @@ export class GamesService {
       `Fetching game from RAWG API: ${JSON.stringify(gameFilters)}`
     )
 
-    const rawgGames = await this.rawgApiProvider.searchGames({
-      title: gameFilters.title,
-      platformName: gameFilters.platform
-    })
+    const rawgGames =
+      await this.gameDatabaseProvider.searchGames<RawgGameInterface>({
+        title: gameFilters.title,
+        platformName: gameFilters.platform
+      })
 
     if (!rawgGames || rawgGames.length === 0) {
       throw new NotFoundException(

@@ -8,7 +8,7 @@ import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { catchError, map, firstValueFrom, throwError } from 'rxjs'
 import { env } from '@src/shared/config/env'
-import { GameFilters, GameProvider } from './game.provider'
+import { GameFilters, GameProvider } from '../game.provider'
 import { RawgGameInterface } from '@src/shared/interfaces/rawg-game.interface'
 import { AxiosResponse } from 'axios'
 
@@ -24,7 +24,7 @@ export class RawgApiProvider implements GameProvider {
     this.apiKey = env.RAWG_API_KEY
   }
 
-  async searchGames({
+  async searchGames<RawgGameInterface>({
     title,
     platformName
   }: GameFilters): Promise<RawgGameInterface[]> {
