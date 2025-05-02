@@ -4,7 +4,8 @@
 ## Table of Contents
 
 1. [Getting Started](#getting-started)
-1. [ERD](#erd)
+2. [Tests](#tests)
+3. [ERD](#erd)
 
 ## Getting Started
 
@@ -58,6 +59,18 @@
 The application will now be running at http://localhost:3000
 
 To see docs its running at http://localhost:3000/api
+
+## Tests
+
+The test implementation follows best practices including:
+- Clear Arrange/Act/Assert structure
+- Mocking of dependencies
+- Clear test naming and organization
+
+You can run the tests using the npm scripts defined in package.json:
+- `pnpm run test` - Run all tests
+- `pnpm run test:unit` - Run unit tests
+- `npm run test:e2e` - Run end-to-end tests
 
 ## ERD
 
