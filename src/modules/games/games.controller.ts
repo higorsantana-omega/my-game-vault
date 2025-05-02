@@ -3,7 +3,10 @@ import isPublic from '@src/shared/module/decorators/isPublic.decorator'
 import { GamesService } from './games.service'
 import { ZodValidationPipe } from 'nestjs-zod'
 import { ApiOkResponse, ApiQuery } from '@nestjs/swagger'
-import { GameResponseDto } from './dto/games-filters.dto'
+import {
+  GameResponseDto,
+  PaginatedGameResponseDto
+} from './dto/games-filters.dto'
 
 @isPublic()
 @Controller({
@@ -25,12 +28,25 @@ export class GamesController {
 
   @Get()
   @ApiOkResponse({
-    type: [GameResponseDto],
+    type: PaginatedGameResponseDto,
     description: 'List all games'
   })
   @ApiQuery({ name: 'title', required: false })
   @ApiQuery({ name: 'platform', required: false })
-  getAll(@Query('title') title: string, @Query('platform') platform: string) {
-    return this.gamesService.findAllGames({ filters: { title, platform } })
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  getAll(
+    @Query('title') title: string,
+    @Query('platform') platform: string,
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10'
+  ) {
+    return this.gamesService.findAllGames({
+      filters: { title, platform },
+      pagination: {
+        page: parseInt(page, 10),
+        limit: parseInt(limit, 10)
+      }
+    })
   }
 }

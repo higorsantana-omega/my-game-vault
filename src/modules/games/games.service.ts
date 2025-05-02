@@ -2,7 +2,11 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 
 import { GamesRepository } from '@src/shared/module/database/repositories/games.repository'
 
-import { GameFilterDto, GameResponseDto } from './dto/games-filters.dto'
+import {
+  GameFilterDto,
+  GameResponseDto,
+  PaginatedGameResponse
+} from './dto/games-filters.dto'
 import { Game } from '@src/shared/entity/game.entity'
 import { CacheProvider } from '@src/shared/module/providers/cache/cache.provider'
 import { CACHE_KEYS, CACHE_TTL } from './constants/cache-contants'
@@ -103,14 +107,15 @@ export class GamesService {
 
   async findAllGames(
     gameFilterDto?: GameFilterDto
-  ): Promise<GameResponseDto[]> {
+  ): Promise<PaginatedGameResponse> {
     const gameFilters = normalizeGameFilters(gameFilterDto)
 
     const cacheKey = gameFilterDto
       ? generateCacheKey(CACHE_KEYS.GAME_LIST, gameFilters)
       : CACHE_KEYS.GAME_LIST
 
-    const cacheHit = await this.cacheProvider.get<GameResponseDto[]>(cacheKey)
+    const cacheHit =
+      await this.cacheProvider.get<PaginatedGameResponse>(cacheKey)
     if (cacheHit) {
       this.logger.log('Returning cached games list')
       return cacheHit
@@ -120,14 +125,25 @@ export class GamesService {
       `Games returning from database for filters: ${JSON.stringify(gameFilters)}`
     )
 
-    const games = await this.gamesRepository.findAll(
-      getQueryFromFilters(gameFilters)
-    )
+    const { items, total, totalPages } =
+      await this.gamesRepository.findAllPaginated(
+        getQueryFromFilters(gameFilters),
+        gameFilters.pagination
+      )
 
-    const result = games.map((game) => mapGameToResponseDto(game))
+    const gameResults = items.map((game) => mapGameToResponseDto(game))
+    const result = {
+      data: gameResults,
+      meta: {
+        total,
+        page: gameFilters.pagination.page,
+        limit: gameFilters.pagination.limit,
+        totalPages
+      }
+    }
 
-    if (result.length) {
-      await this.cacheProvider.set<GameResponseDto[]>(
+    if (gameResults.length) {
+      await this.cacheProvider.set<PaginatedGameResponse>(
         cacheKey,
         result,
         CACHE_TTL.GAME_LIST

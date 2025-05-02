@@ -53,3 +53,14 @@ export const paginatedResponseDto = <T extends z.ZodTypeAny>(itemSchema: T) =>
 export type PaginatedGameResponse = z.infer<
   ReturnType<typeof paginatedResponseDto<typeof gameResponseDto>>
 >
+
+export const createPaginatedResponseDto = <T extends z.ZodTypeAny>(
+  itemSchema: T
+) => {
+  const schema = paginatedResponseDto(itemSchema)
+  return class extends createZodDto(schema) {}
+}
+
+export class PaginatedGameResponseDto extends createPaginatedResponseDto(
+  gameResponseDto
+) {}
