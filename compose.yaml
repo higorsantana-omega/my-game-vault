@@ -12,6 +12,15 @@ services:
     volumes:
       - vaultdata:/var/lib/postgresql/data
     restart: always
+  redis:
+    container_name: mygamevault-redis
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redisdata:/data
+    restart: always
 
 volumes:
   vaultdata:
+  redisdata:
