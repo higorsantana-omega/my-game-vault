@@ -124,11 +124,13 @@ export class GamesService {
 
     const result = games.map((game) => mapGameToResponseDto(game))
 
-    await this.cacheProvider.set<GameResponseDto[]>(
-      cacheKey,
-      result,
-      CACHE_TTL.GAME_LIST
-    )
+    if (result.length) {
+      await this.cacheProvider.set<GameResponseDto[]>(
+        cacheKey,
+        result,
+        CACHE_TTL.GAME_LIST
+      )
+    }
 
     return result
   }
