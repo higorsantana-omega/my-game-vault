@@ -47,9 +47,6 @@ importers:
       prisma:
         specifier: ^6.7.0
         version: 6.7.0(typescript@5.8.3)
-      redis:
-        specifier: ^5.0.0
-        version: 5.0.0
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -1048,34 +1045,6 @@ packages:
 
   '@prisma/get-platform@6.7.0':
     resolution: {integrity: sha512-i9IH5lO4fQwnMLvQLYNdgVh9TK3PuWBfQd7QLk/YurnAIg+VeADcZDbmhAi4XBBDD+hDif9hrKyASu0hbjwabw==}
-
-  '@redis/bloom@5.0.0':
-    resolution: {integrity: sha512-YHlra6a7+brJ3Ustqa+jC68Pdnw2/wbnVLeULN0llP3gHpKxOSmiDyLwuHq5t/jFi6QUgjSprUQi2a8CieKFIA==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      '@redis/client': ^5.0.0
-
-  '@redis/client@5.0.0':
-    resolution: {integrity: sha512-1MqfzOOoFBwWprigJ3S5hM+LuzaWwxyyx+74NDzCpmjKWyjjC07xkWsd5E9fr+61NUDtvUivRiyAxGiRIwJCaQ==}
-    engines: {node: '>= 18'}
-
-  '@redis/json@5.0.0':
-    resolution: {integrity: sha512-8YFjshsvWR9dWjOiQ50TfBxfl+z1mjCae8jDnfOYN1aCvUZWJXqM1OpL56v6mWRyXwZ5C9qJJKDGmHTr4PVskQ==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      '@redis/client': ^5.0.0
-
-  '@redis/search@5.0.0':
-    resolution: {integrity: sha512-oEop/S/0NB5p7vpTTlp5X5LQO4oTomJnFEOaKhQ5xZWROLXTgEVvPSfXVNBbtr9maU2+OupxXQR63HW3MGeTUg==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      '@redis/client': ^5.0.0
-
-  '@redis/time-series@5.0.0':
-    resolution: {integrity: sha512-DNsP4DH5CRfXlQDyvLJm2DltZm3kjpVKZsNTI3SPdbRxhc9i2c0NehUbM/gDECnEfG+jkNN/LUv6Em4LaLwPBQ==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      '@redis/client': ^5.0.0
 
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
@@ -3177,10 +3146,6 @@ packages:
     resolution: {integrity: sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==}
     engines: {node: '>=4'}
 
-  redis@5.0.0:
-    resolution: {integrity: sha512-J/fzf0cYeFw5NP4aYIvv9owYOcNUsaDqF4qmwbSuaV4yKBLaIHJQIFbAKLgjn99GDXdJBbfqCRXE7+BIlkpATA==}
-    engines: {node: '>= 18'}
-
   reflect-metadata@0.2.2:
     resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
 
@@ -4730,26 +4695,6 @@ snapshots:
   '@prisma/get-platform@6.7.0':
     dependencies:
       '@prisma/debug': 6.7.0
-
-  '@redis/bloom@5.0.0(@redis/client@5.0.0)':
-    dependencies:
-      '@redis/client': 5.0.0
-
-  '@redis/client@5.0.0':
-    dependencies:
-      cluster-key-slot: 1.1.2
-
-  '@redis/json@5.0.0(@redis/client@5.0.0)':
-    dependencies:
-      '@redis/client': 5.0.0
-
-  '@redis/search@5.0.0(@redis/client@5.0.0)':
-    dependencies:
-      '@redis/client': 5.0.0
-
-  '@redis/time-series@5.0.0(@redis/client@5.0.0)':
-    dependencies:
-      '@redis/client': 5.0.0
 
   '@sec-ant/readable-stream@0.4.1': {}
 
@@ -7112,14 +7057,6 @@ snapshots:
   redis-parser@3.0.0:
     dependencies:
       redis-errors: 1.2.0
-
-  redis@5.0.0:
-    dependencies:
-      '@redis/bloom': 5.0.0(@redis/client@5.0.0)
-      '@redis/client': 5.0.0
-      '@redis/json': 5.0.0(@redis/client@5.0.0)
-      '@redis/search': 5.0.0(@redis/client@5.0.0)
-      '@redis/time-series': 5.0.0(@redis/client@5.0.0)
 
   reflect-metadata@0.2.2: {}
 
