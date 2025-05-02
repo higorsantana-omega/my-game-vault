@@ -5,6 +5,7 @@ import { GamesRepository } from '@src/shared/module/database/repositories/games.
 import { GameResponseDto, RetrieveGamesDto } from './dto/retrive-games.dto'
 import { RawgApiProvider } from '@src/shared/module/providers/rawg-api.provider'
 import { Game } from '@src/shared/entity/game.entity'
+import { CacheProvider } from '@src/shared/module/providers/cache.provider'
 
 @Injectable()
 export class GamesService {
@@ -12,13 +13,25 @@ export class GamesService {
 
   constructor(
     private readonly rawgApiProvider: RawgApiProvider,
-    private readonly gamesRepository: GamesRepository
+    private readonly gamesRepository: GamesRepository,
+    private readonly cacheProvider: CacheProvider
   ) {}
 
   async retrieveGames(retrieveDto: RetrieveGamesDto): Promise<GameResponseDto> {
     const gameFilters = {
       title: retrieveDto?.filters?.title?.trim()?.toLowerCase(),
       platform: retrieveDto?.filters?.platform?.trim()?.toLowerCase()
+    }
+
+    const cacheKey = `game:search:${Object.entries(gameFilters)
+      .map(([key, value]) => `${key}=${value ?? ''}`)
+      .join('&')}`
+
+    const cacheHit = await this.cacheProvider.get<GameResponseDto>(cacheKey)
+    if (cacheHit) {
+      this.logger.log(`Game found in Cache Hit: ${JSON.stringify(gameFilters)}`)
+
+      return cacheHit
     }
 
     const gameFromDb = await this.gamesRepository.findOneBy({
@@ -35,6 +48,8 @@ export class GamesService {
         `Game found in database for filters: ${JSON.stringify(gameFilters)}`
       )
       const result = this.mapGameToResponseDto(gameFromDb)
+
+      await this.cacheProvider.set<GameResponseDto>(cacheKey, result, 10000)
 
       return result
     }
@@ -72,6 +87,9 @@ export class GamesService {
     const game = await this.gamesRepository.save(newGame)
 
     const result = this.mapGameToResponseDto(game)
+
+    await this.cacheProvider.set<GameResponseDto>(cacheKey, result, 10000)
+
     return result
   }
 
