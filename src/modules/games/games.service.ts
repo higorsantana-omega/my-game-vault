@@ -6,7 +6,7 @@ import { GameFilterDto, GameResponseDto } from './dto/games-filters.dto'
 import { RawgApiProvider } from '@src/shared/module/providers/rawg-api.provider'
 import { Game } from '@src/shared/entity/game.entity'
 import { CacheProvider } from '@src/shared/module/providers/cache.provider'
-import { CACHE_KEYS } from './constants/cache-contants'
+import { CACHE_KEYS, CACHE_TTL } from './constants/cache-contants'
 import {
   generateCacheKey,
   getQueryFromFilters,
@@ -46,7 +46,11 @@ export class GamesService {
       )
       const result = mapGameToResponseDto(gameFromDb)
 
-      await this.cacheProvider.set<GameResponseDto>(cacheKey, result, 10000)
+      await this.cacheProvider.set<GameResponseDto>(
+        cacheKey,
+        result,
+        CACHE_TTL.GAME_SEARCH
+      )
 
       return result
     }
@@ -85,7 +89,11 @@ export class GamesService {
 
     const result = mapGameToResponseDto(game)
 
-    await this.cacheProvider.set<GameResponseDto>(cacheKey, result, 10000)
+    await this.cacheProvider.set<GameResponseDto>(
+      cacheKey,
+      result,
+      CACHE_TTL.GAME_SEARCH
+    )
     await this.cacheProvider.delete(CACHE_KEYS.GAME_LIST)
 
     return result
@@ -112,7 +120,11 @@ export class GamesService {
 
     const result = games.map((game) => mapGameToResponseDto(game))
 
-    await this.cacheProvider.set<GameResponseDto[]>(cacheKey, result, 10000)
+    await this.cacheProvider.set<GameResponseDto[]>(
+      cacheKey,
+      result,
+      CACHE_TTL.GAME_LIST
+    )
 
     return result
   }
