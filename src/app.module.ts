@@ -10,9 +10,23 @@ import { AuthGuard } from './modules/auth/auth.guard'
 import { AuthModule } from './modules/auth/auth.module'
 import { UsersModule } from './modules/users/users.module'
 import { GamesModule } from './modules/games/games.module'
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 
 @Module({
-  imports: [DatabaseModule, AuthModule, UsersModule, GamesModule],
+  imports: [
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 20
+        }
+      ]
+    }),
+    DatabaseModule,
+    AuthModule,
+    UsersModule,
+    GamesModule
+  ],
   controllers: [],
   providers: [
     {
@@ -26,6 +40,10 @@ import { GamesModule } from './modules/games/games.module'
     {
       provide: APP_GUARD,
       useClass: AuthGuard
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
     }
   ]
 })
