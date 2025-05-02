@@ -114,6 +114,10 @@ export class GamesService {
       return cacheHit
     }
 
+    this.logger.log(
+      `Games returning from database for filters: ${JSON.stringify(gameFilters)}`
+    )
+
     const games = await this.gamesRepository.findAll(
       getQueryFromFilters(gameFilters)
     )
