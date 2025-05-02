@@ -11,3 +11,9 @@ const authenticateSchema = z.object({
 })
 
 export class AuthenticateDto extends createZodDto(authenticateSchema) {}
+
+const accessToken = z.object({
+  accessToken: z.string()
+})
+
+export class AccessTokenDto extends createZodDto(accessToken) {}

@@ -4,8 +4,8 @@ import { createZodDto } from 'nestjs-zod'
 const gameFilterDto = z.object({
   filters: z
     .object({
-      title: z.string().optional(),
-      platform: z.string().optional()
+      title: z.string().optional().describe('The title of game'),
+      platform: z.string().optional().describe('The platform of game')
     })
     .optional()
 })
@@ -17,7 +17,7 @@ const ratingGameDto = z.object({
   count: z.number().describe('10000')
 })
 
-const gameResponseDto = z.object({
+export const gameResponseDto = z.object({
   id: z.string().describe('f47ac10b-58cc-4372-a567-0e02b2c3d479'),
   title: z.string().describe('God Of War'),
   description: z.string().optional().describe('Um jogo de ação e aventura...'),
