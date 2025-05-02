@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
 
 import { CacheProvider } from './cache.provider'
-import { RedisCacheProvider } from './redis-cache-provider'
-import { RedisService } from './redis.service'
+import { RedisCacheProvider } from './redis/redis-cache-provider'
+import { RedisService } from './redis/redis.service'
 
 @Module({
   providers: [

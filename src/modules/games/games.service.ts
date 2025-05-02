@@ -5,7 +5,7 @@ import { GamesRepository } from '@src/shared/module/database/repositories/games.
 import { GameFilterDto, GameResponseDto } from './dto/games-filters.dto'
 import { RawgApiProvider } from '@src/shared/module/providers/rawg-api.provider'
 import { Game } from '@src/shared/entity/game.entity'
-import { CacheProvider } from '@src/shared/module/providers/cache.provider'
+import { CacheProvider } from '@src/shared/module/providers/cache/cache.provider'
 import { CACHE_KEYS, CACHE_TTL } from './constants/cache-contants'
 import {
   generateCacheKey,

@@ -3,7 +3,7 @@ import { GamesController } from './games.controller'
 import { GamesService } from './games.service'
 import { HttpModule } from '@nestjs/axios'
 import { RawgApiProvider } from '@src/shared/module/providers/rawg-api.provider'
-import { CacheModule } from '@src/shared/module/providers/cache.module'
+import { CacheModule } from '@src/shared/module/providers/cache/cache.module'
 
 @Module({
   imports: [

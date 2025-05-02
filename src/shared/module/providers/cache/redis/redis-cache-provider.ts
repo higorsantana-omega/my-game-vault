@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Injectable, Logger } from '@nestjs/common'
-import { CacheProvider } from './cache.provider'
+import { CacheProvider } from '../cache.provider'
 import { RedisService } from './redis.service'
 
 @Injectable()
