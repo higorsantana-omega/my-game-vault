@@ -6,6 +6,7 @@ import { GameFilterDto, GameResponseDto } from './dto/games-filters.dto'
 import { RawgApiProvider } from '@src/shared/module/providers/rawg-api.provider'
 import { Game } from '@src/shared/entity/game.entity'
 import { CacheProvider } from '@src/shared/module/providers/cache.provider'
+import { CACHE_KEYS } from './constants/cache-contants'
 
 @Injectable()
 export class GamesService {
@@ -20,9 +21,7 @@ export class GamesService {
   async searchGames(gameFilterDto: GameFilterDto): Promise<GameResponseDto> {
     const gameFilters = this.normalizeGameFilters(gameFilterDto)
 
-    const cacheKey = `game:search:${Object.entries(gameFilters)
-      .map(([key, value]) => `${key}=${value ?? ''}`)
-      .join('&')}`
+    const cacheKey = this.generateCacheKey(CACHE_KEYS.GAME_SEARCH, gameFilters)
 
     const cacheHit = await this.cacheProvider.get<GameResponseDto>(cacheKey)
     if (cacheHit) {
@@ -85,10 +84,8 @@ export class GamesService {
 
     const result = this.mapGameToResponseDto(game)
 
-    const cacheGameListKey = 'game:list:'
-
     await this.cacheProvider.set<GameResponseDto>(cacheKey, result, 10000)
-    await this.cacheProvider.delete(cacheGameListKey)
+    await this.cacheProvider.delete(CACHE_KEYS.GAME_LIST)
 
     return result
   }
@@ -99,10 +96,8 @@ export class GamesService {
     const gameFilters = this.normalizeGameFilters(gameFilterDto)
 
     const cacheKey = gameFilterDto
-      ? `game:list:${Object.entries(gameFilters)
-          .map(([key, value]) => `${key}=${value ?? ''}`)
-          .join('&')}`
-      : 'game:list'
+      ? this.generateCacheKey(CACHE_KEYS.GAME_LIST, gameFilters)
+      : CACHE_KEYS.GAME_LIST
 
     const cacheHit = await this.cacheProvider.get<GameResponseDto[]>(cacheKey)
     if (cacheHit) {
@@ -131,6 +126,12 @@ export class GamesService {
       title: gameFilterDto?.filters?.title?.trim()?.toLowerCase() || '',
       platform: gameFilterDto?.filters?.platform?.trim()?.toLowerCase() || ''
     }
+  }
+
+  private generateCacheKey(prefix: string, filters: Record<string, string>) {
+    return `${prefix}:${Object.entries(filters)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&')}`
   }
 
   private mapGameToResponseDto(game: Game): GameResponseDto {
