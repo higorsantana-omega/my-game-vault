@@ -88,7 +88,46 @@ export class GamesService {
 
     const result = this.mapGameToResponseDto(game)
 
+    const cacheGameListKey = 'game:list:'
+
     await this.cacheProvider.set<GameResponseDto>(cacheKey, result, 10000)
+    await this.cacheProvider.delete(cacheGameListKey)
+
+    return result
+  }
+
+  async findAllGames(
+    gameFilterDto?: GameFilterDto
+  ): Promise<GameResponseDto[]> {
+    const gameFilters = {
+      title: gameFilterDto?.filters?.title?.trim()?.toLowerCase(),
+      platform: gameFilterDto?.filters?.platform?.trim()?.toLowerCase()
+    }
+
+    const cacheKey = gameFilterDto
+      ? `game:list:${Object.entries(gameFilters)
+          .map(([key, value]) => `${key}=${value ?? ''}`)
+          .join('&')}`
+      : 'game:list'
+
+    const cacheHit = await this.cacheProvider.get<GameResponseDto[]>(cacheKey)
+    if (cacheHit) {
+      this.logger.log('Returning cached games list')
+      return cacheHit
+    }
+
+    const games = await this.gamesRepository.findAll({
+      title: gameFilters?.title ? { contains: gameFilters.title } : undefined,
+      platforms: gameFilters?.platform
+        ? {
+            has: gameFilters.platform
+          }
+        : undefined
+    })
+
+    const result = games.map((game) => this.mapGameToResponseDto(game))
+
+    await this.cacheProvider.set<GameResponseDto[]>(cacheKey, result, 10000)
 
     return result
   }
