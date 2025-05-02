@@ -14,4 +14,9 @@ export class GamesController {
   searchGames(@Query('title') title: string) {
     return this.gamesService.searchGames({ filters: { title } })
   }
+
+  @Get()
+  getAll(@Query('title') title: string, @Query('platform') platform: string) {
+    return this.gamesService.findAllGames({ filters: { title, platform } })
+  }
 }
