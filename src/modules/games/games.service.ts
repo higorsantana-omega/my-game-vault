@@ -18,10 +18,7 @@ export class GamesService {
   ) {}
 
   async searchGames(gameFilterDto: GameFilterDto): Promise<GameResponseDto> {
-    const gameFilters = {
-      title: gameFilterDto?.filters?.title?.trim()?.toLowerCase(),
-      platform: gameFilterDto?.filters?.platform?.trim()?.toLowerCase()
-    }
+    const gameFilters = this.normalizeGameFilters(gameFilterDto)
 
     const cacheKey = `game:search:${Object.entries(gameFilters)
       .map(([key, value]) => `${key}=${value ?? ''}`)
@@ -99,10 +96,7 @@ export class GamesService {
   async findAllGames(
     gameFilterDto?: GameFilterDto
   ): Promise<GameResponseDto[]> {
-    const gameFilters = {
-      title: gameFilterDto?.filters?.title?.trim()?.toLowerCase(),
-      platform: gameFilterDto?.filters?.platform?.trim()?.toLowerCase()
-    }
+    const gameFilters = this.normalizeGameFilters(gameFilterDto)
 
     const cacheKey = gameFilterDto
       ? `game:list:${Object.entries(gameFilters)
@@ -130,6 +124,13 @@ export class GamesService {
     await this.cacheProvider.set<GameResponseDto[]>(cacheKey, result, 10000)
 
     return result
+  }
+
+  private normalizeGameFilters(gameFilterDto?: GameFilterDto) {
+    return {
+      title: gameFilterDto?.filters?.title?.trim()?.toLowerCase() || '',
+      platform: gameFilterDto?.filters?.platform?.trim()?.toLowerCase() || ''
+    }
   }
 
   private mapGameToResponseDto(game: Game): GameResponseDto {
