@@ -34,6 +34,11 @@ export class RedisCacheProvider implements CacheProvider {
   }
 
   async delete(key: string): Promise<void> {
-    await this.redis.del(key)
+    const keys = await this.redis.keys(`${key}*`)
+
+    if (keys.length > 0) {
+      await this.redis.del(...keys)
+      this.logger.log(`Deleted keys: ${keys.join(', ')}`)
+    }
   }
 }
