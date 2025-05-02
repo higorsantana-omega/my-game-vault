@@ -36,7 +36,7 @@ export class Game {
     this.rawgId = data.rawgId
     this.description = data.description || null
     this.releaseDate = data.releaseDate || null
-    this.platforms = data.platforms
+    this.platforms = data.platforms.map((p) => p.trim().toLowerCase())
     this.imageUrl = data.imageUrl
     this.rating = data.rating
     this.createdAt = data.createdAt || null
