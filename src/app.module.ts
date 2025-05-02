@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
-import { APP_GUARD, APP_PIPE } from '@nestjs/core'
+import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 
-import { ZodValidationPipe } from 'nestjs-zod'
+import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod'
 
 import { DatabaseModule } from './shared/module/database/database.module'
 
@@ -18,6 +18,10 @@ import { GamesModule } from './modules/games/games.module'
     {
       provide: APP_PIPE,
       useClass: ZodValidationPipe
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ZodSerializerInterceptor
     },
     {
       provide: APP_GUARD,
